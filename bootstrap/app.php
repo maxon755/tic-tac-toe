@@ -1,5 +1,10 @@
 <?php
 
+use App\Storages\GameStorage\GameStorage;
+use App\Storages\GameStorage\InMemoryGameStorage;
+use Laravel\Lumen\Http\ResponseFactory;
+use Lunaweb\RedisMock\Providers\RedisMockServiceProvider;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -48,6 +53,15 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton(\Illuminate\Contracts\Routing\ResponseFactory::class, function() {
+    return new ResponseFactory();
+});
+
+$app->bind(
+    GameStorage::class,
+    InMemoryGameStorage::class
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
@@ -92,10 +106,11 @@ $app->configure('database');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+ $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
+$app->register(RedisMockServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

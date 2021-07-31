@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Adapters\BoardStateConvertor;
+use App\Helpers\BoardStateConvertor;
 use App\Domain\Game\Game;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class GameResource extends JsonResource
 {
+    public function __construct($resource)
+    {
+        static::$wrap = null;
+        parent::__construct($resource);
+    }
+
     public function toArray($request)
     {
         /** @var Game $game */
@@ -17,7 +23,8 @@ class GameResource extends JsonResource
 
         return [
             'id'       => $game->getId(),
-            'board'    => BoardStateConvertor::fromArrayToString($game->getBoard()->getState())
+            'board'    => BoardStateConvertor::fromArrayToString($game->getBoard()->getState()),
+            'status'   => (string) $game->getStatus(),
         ];
     }
 }

@@ -35,4 +35,12 @@ class Game
     {
         return $this->board;
     }
+
+    /**
+     * @return Status
+     */
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
 }

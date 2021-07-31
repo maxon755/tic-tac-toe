@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Adapters;
+namespace App\Helpers;
 
 use App\Domain\Board\BoardInterface;
 

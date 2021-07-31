@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "illuminate/redis": "^8.52",
+        "josiasmontag/laravel-redis-mock": "^1.2",
         "laravel/lumen-framework": "^8.0",
         "predis/predis": "^1.1",
         "ramsey/uuid": "^4.1"

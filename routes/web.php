@@ -23,7 +23,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('/games', 'GameController@create');
 
     $router->get('/games/{id}', [
-        'as'   => 'get-game',
+        'as'   => 'game.get',
         'uses' => 'GameController@get',
     ]);
 });
