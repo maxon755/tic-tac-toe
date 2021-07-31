@@ -6,7 +6,9 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
+        "illuminate/redis": "^8.52",
         "laravel/lumen-framework": "^8.0",
+        "predis/predis": "^1.1",
         "ramsey/uuid": "^4.1"
     },
     "require-dev": {
