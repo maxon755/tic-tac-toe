@@ -15,13 +15,28 @@ class InMemoryGameStorage implements GameStorage
 
     public function store(Game $game): void
     {
-        $this->redisManager->set('games:' . $game->getId(), serialize($game));
+        $this->redisManager->set($this->withPrefix($game->getId()), serialize($game));
     }
 
     public function get(string $gameId): ?Game
     {
-        $game = $this->redisManager->get('games:' . $gameId);
+        $game = $this->redisManager->get($this->withPrefix($gameId));
 
         return $game ? unserialize($game) : null;
+    }
+
+    public function has(string $gameId): bool
+    {
+        return (bool)$this->redisManager->exists($this->withPrefix($gameId));
+    }
+
+    public function delete(string $gameId): bool
+    {
+        return (bool)$this->redisManager->del($this->withPrefix($gameId));
+    }
+
+    private function withPrefix(string $key): string
+    {
+        return "games:$key";
     }
 }

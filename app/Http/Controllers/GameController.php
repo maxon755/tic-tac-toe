@@ -10,6 +10,7 @@ use App\Domain\Game\Game;
 use App\Http\Resources\GameLocationResource;
 use App\Http\Resources\GameResource;
 use App\Storages\GameStorage\GameStorage;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
@@ -42,9 +43,22 @@ class GameController extends Controller
         $game = $this->gameStorage->get($id);
 
         if (!$game) {
-            return $this->notFound('Game not found.');
+            return $this->notFound();
         }
 
         return GameResource::make($game);
+    }
+
+    public function delete(string $id): JsonResponse
+    {
+        if (!$this->gameStorage->has($id)) {
+            return $this->notFound();
+        }
+
+        if ($this->gameStorage->delete($id)) {
+            return $this->ok('Game successfully deleted');
+        } else {
+            throw new Exception('Something going wrong while game deletion');
+        }
     }
 }

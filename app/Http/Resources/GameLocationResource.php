@@ -15,7 +15,7 @@ class GameLocationResource extends JsonResource
     {
         parent::__construct($game);
 
-        $this->location = route('get-game', [
+        $this->location = route('game.get', [
             'id' => $game->getId(),
         ]);
     }
