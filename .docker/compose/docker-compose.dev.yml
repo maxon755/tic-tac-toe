@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+
+  web-server:
+    build:
+      context: .
+      dockerfile: .docker/services/nginx/Dockerfile
+      target: runtime
+    depends_on:
+      - app
+    ports:
+      - 80:80
+    volumes:
+      - ./public:/usr/share/nginx/html
+
+  app:
+    build:
+      context: .
+      dockerfile: .docker/services/php/Dockerfile
+      target: development
+      args:
+        - USER_UID=${USER_UID:-1000}
+        - USER_GID=${USER_GID:-1000}
+    volumes:
+      - .:/var/www/html
+    env_file:
+      - .env
+
+  redis:
+    image: redis
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - 8084:8081
+
+
+
