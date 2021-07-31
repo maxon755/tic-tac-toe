@@ -13,7 +13,6 @@
 |
 */
 
-use App\Http\Controllers\GameController;
 use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
@@ -22,4 +21,9 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('/games', 'GameController@create');
+
+    $router->get('/games/{id}', [
+        'as'   => 'get-game',
+        'uses' => 'GameController@get',
+    ]);
 });

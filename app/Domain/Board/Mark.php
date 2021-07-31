@@ -2,13 +2,16 @@
 
 namespace App\Domain\Board;
 
-use Exception;
+use App\Domain\Exceptions\WrongSignException;
 
 class Mark
 {
+    public const X_SIGN = 'X';
+    public const O_SIGN = 'O';
+
     public const ALLOWED_SIGNS = [
-        'X',
-        'O',
+        self::X_SIGN,
+        self::O_SIGN,
     ];
 
     public function __construct(
@@ -20,13 +23,23 @@ class Mark
         self::checkSign($sign);
     }
 
+    /**
+     * @param string $sign
+     *
+     * @throws WrongSignException
+     */
     private static function checkSign(string $sign): void
     {
         if (!self::isSignValid($sign)) {
-            throw new Exception("Sign ${sign} is not allowed");
+            throw new WrongSignException($sign);
         }
     }
 
+    /**
+     * @param string $sign
+     *
+     * @return bool
+     */
     public static function isSignValid(string $sign): bool
     {
         return in_array($sign, self::ALLOWED_SIGNS);

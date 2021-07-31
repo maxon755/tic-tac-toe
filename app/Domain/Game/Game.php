@@ -1,16 +1,23 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Game;
 
 use App\Domain\Board\Board;
 
 class Game
 {
+    private Status $status;
+
+    private StatusChecker $statusChecker;
+
     public function __construct(
         private string $id,
-        private Board $board
+        private Board  $board
     )
     {
+        $this->statusChecker = new StatusChecker();
+
+        $this->status = $this->statusChecker->check($this->board);
     }
 
     /**

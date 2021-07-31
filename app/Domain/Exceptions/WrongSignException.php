@@ -8,5 +8,8 @@ use Exception;
 
 class WrongSignException extends Exception
 {
-
+    public function __construct(string $sign)
+    {
+        parent::__construct("Sign ${sign} is not allowed");
+    }
 }

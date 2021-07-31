@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Adapters\BoardStateStringToArrayAdapter;
+use App\Adapters\BoardStateConvertor;
 use App\Domain\Board\Board;
-use App\Domain\Game;
+use App\Domain\Game\Game;
+use App\Http\Resources\GameLocationResource;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 
@@ -19,10 +20,10 @@ class GameController extends Controller
 
         $boardState = $request->input('board');
 
-        $board = new Board(BoardStateStringToArrayAdapter::adapt($boardState));
+        $board = new Board(BoardStateConvertor::fromStringToArray($boardState));
 
         $game = new Game(Uuid::uuid4()->toString(), $board);
 
-        dd($game);
+        return GameLocationResource::make($game);
     }
 }
