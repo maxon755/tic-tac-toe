@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Board;
 
+use App\Domain\Exceptions\CellIsNotEmptyException;
 use App\Domain\Exceptions\WrongBoardSizeException;
 use App\Domain\Exceptions\WrongMarkPositionException;
 use App\Domain\Exceptions\WrongSignException;
@@ -53,10 +54,12 @@ class Board
      * @param Mark $mark
      *
      * @throws WrongMarkPositionException
+     * @throws CellIsNotEmptyException
      */
     public function setMark(Mark $mark)
     {
         $this->checkMarkPosition($mark);
+        $this->checkCellAvailability($mark);
 
         $this->state[$mark->getRow()][$mark->getColumn()] = $mark->getSign();
     }
@@ -77,6 +80,18 @@ class Board
 
         if ($column < 0 && $column >= self::BOARD_SIZE) {
             throw new WrongMarkPositionException($row, $column);
+        }
+    }
+
+    /**
+     * @param Mark $mark
+     *
+     * @throws CellIsNotEmptyException
+     */
+    private function checkCellAvailability(Mark $mark): void
+    {
+        if ($this->state[$mark->getRow()][$mark->getColumn()] !== self::EMPTY_CELL_SIGN) {
+            throw new CellIsNotEmptyException($mark->getRow(), $mark->getColumn());
         }
     }
 }

@@ -14,6 +14,13 @@ class Mark
         self::O_SIGN,
     ];
 
+    /**
+     * @param int $row
+     * @param int $column
+     * @param string $sign
+     *
+     * @throws WrongSignException
+     */
     public function __construct(
         private int $row,
         private int $column,
@@ -21,6 +28,30 @@ class Mark
     )
     {
         self::checkSign($sign);
+    }
+
+    /**
+     * @param int $row
+     * @param int $column
+     *
+     * @return Mark
+     * @throws WrongSignException
+     */
+    public static function createXMark(int $row, int $column)
+    {
+        return new self($row, $column, self::X_SIGN);
+    }
+
+    /**
+     * @param int $row
+     * @param int $column
+     *
+     * @return Mark
+     * @throws WrongSignException
+     */
+    public static function createOMark(int $row, int $column)
+    {
+        return new self($row, $column, self::O_SIGN);
     }
 
     /**

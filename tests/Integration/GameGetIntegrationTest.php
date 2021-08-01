@@ -26,7 +26,7 @@ class GameGetIntegrationTest extends AbstractGameIntegrationTest
             ->seeJson([
                 'id'     => 'uuid',
                 'board'  => '---------',
-                'status' => Status::RUNNING,
+                'status' => (string) Status::createRunningStatus(),
             ])
             ->assertResponseOk();
     }

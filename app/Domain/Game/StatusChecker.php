@@ -20,12 +20,38 @@ class StatusChecker
     {
         if (
             $this->checkHorizontals($board, Mark::X_SIGN) ||
-            $this->checkVerticals($board, Mark::X_SIGN)
+            $this->checkVerticals($board, Mark::X_SIGN) ||
+            $this->checkDiagonals($board, Mark::X_SIGN)
         ) {
             return Status::createXWonStatus();
         }
 
+        if (
+            $this->checkHorizontals($board, Mark::O_SIGN) ||
+            $this->checkVerticals($board, Mark::O_SIGN) ||
+            $this->checkDiagonals($board, Mark::O_SIGN)
+        ) {
+            return Status::createOWonStatus();
+        }
+
+        if ($this->isBoardFull($board)) {
+            return Status::createDrawStatus();
+        }
+
         return Status::createRunningStatus();
+    }
+
+    private function isBoardFull(Board $board): bool
+    {
+        foreach ($board->getState() as $row) {
+            foreach ($row as $cell) {
+                if ($cell === Board::EMPTY_CELL_SIGN) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private function checkHorizontals(Board $board, string $sign): bool
@@ -56,6 +82,33 @@ class StatusChecker
         }
 
         return $signWon;
+    }
+
+    private function checkDiagonals(Board $board, string $sign): bool
+    {
+        $primaryDiagonalSings = [];
+
+        for ($i = 0; $i < Board::BOARD_SIZE; $i++) {
+            for ($j = 0; $j < Board::BOARD_SIZE; $j++) {
+                if ($i === $j) {
+                    $primaryDiagonalSings[] = $board->getState()[$i][$j];
+                }
+            }
+        }
+
+        $secondaryDiagonalSigns = [];
+
+        for ($i = 0; $i < Board::BOARD_SIZE; $i++) {
+            for ($j = 0; $j < Board::BOARD_SIZE; $j++) {
+                if ($i + $j === Board::BOARD_SIZE - 1) {
+                    $secondaryDiagonalSigns[] = $board->getState()[$i][$j];
+                }
+            }
+        }
+
+        return $this->checkArrayElementsEquals($primaryDiagonalSings, $sign) ||
+            $this->checkArrayElementsEquals($secondaryDiagonalSigns, $sign);
+
     }
 
     function transpose($array)

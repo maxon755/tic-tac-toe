@@ -3,6 +3,8 @@
 namespace App\Domain\Game;
 
 use App\Domain\Board\Board;
+use App\Domain\Bots\AbstractBot;
+use App\Domain\Bots\SimpleBot;
 
 class Game
 {
@@ -10,14 +12,29 @@ class Game
 
     private StatusChecker $statusChecker;
 
+    private AbstractBot $bot;
+
+    private WhoIsNextChecker $whoIsNextChecker;
+
     public function __construct(
         private string $id,
         private Board  $board
     )
     {
         $this->statusChecker = new StatusChecker();
+        $this->whoIsNextChecker = new WhoIsNextChecker();
 
         $this->status = $this->statusChecker->check($this->board);
+
+        $this->bot = new SimpleBot('O');
+
+        if (
+            $this->status->isRunning() &&
+            $this->whoIsNextChecker->check($this->board) === $this->bot->getSign()
+        ) {
+            $mark = $this->bot->makeMove($this->board);
+            $this->board->setMark($mark);
+        }
     }
 
     /**

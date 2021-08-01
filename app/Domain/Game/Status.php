@@ -6,10 +6,10 @@ namespace App\Domain\Game;
 
 class Status
 {
-    public const RUNNING = 'RUNNING';
-    public const X_WON = 'X_WON';
-    public const O_WON = 'O_WON';
-    public const DRAW = 'DRAW';
+    private const RUNNING = 'RUNNING';
+    private const X_WON = 'X_WON';
+    private const O_WON = 'O_WON';
+    private const DRAW = 'DRAW';
 
     private function __construct(private string $status)
     {
@@ -33,6 +33,11 @@ class Status
     public static function createDrawStatus():self
     {
         return new self(self::DRAW);
+    }
+
+    public function isRunning(): bool
+    {
+        return $this->status === self::RUNNING;
     }
 
     public function __toString(): string
