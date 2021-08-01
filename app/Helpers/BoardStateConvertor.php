@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-use App\Domain\Board\BoardInterface;
+use App\Domain\Board\Board;
 
 class BoardStateConvertor
 {
-    public static function fromStringToArray(string $boardState): array
+    public function fromStringToArray(string $boardState): array
     {
         $boardState = str_split($boardState);
-        $boardState = array_chunk($boardState, BoardInterface::BOARD_SIZE);
+        $boardState = array_chunk($boardState, Board::BOARD_SIZE);
 
         return $boardState;
     }
 
-    public static function fromArrayToString(array $boardState): string
+    public function fromArrayToString(array $boardState): string
     {
         $boardStateString = '';
 

@@ -49,7 +49,7 @@ class StateValidator
         foreach ($state as $row) {
             foreach ($row as $column) {
                 if ($column !== Board::EMPTY_CELL_SIGN && !Mark::isSignValid($column)) {
-                    throw new WrongSignException();
+                    throw new WrongSignException($column);
                 }
             }
         }

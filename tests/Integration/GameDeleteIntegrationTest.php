@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Integration;
 
 use App\Domain\Board\Board;
+use App\Domain\Board\StateValidator;
 use App\Domain\Game\Game;
 
 class GameDeleteIntegrationTest extends AbstractGameIntegrationTest
@@ -14,7 +15,7 @@ class GameDeleteIntegrationTest extends AbstractGameIntegrationTest
      */
     public function delete_existing_game()
     {
-        $game = new Game('uuid', new Board());
+        $game = new Game('uuid', new Board(new StateValidator()));
 
         $this->storage->store($game);
 

@@ -8,8 +8,12 @@ use App\Domain\Exceptions\WrongBoardSizeException;
 use App\Domain\Exceptions\WrongMarkPositionException;
 use App\Domain\Exceptions\WrongSignException;
 
-class Board implements BoardInterface
+class Board
 {
+    public const BOARD_SIZE = 3;
+
+    public const EMPTY_CELL_SIGN = '-';
+
     private array $state;
 
     /**
@@ -18,10 +22,10 @@ class Board implements BoardInterface
      * @throws WrongBoardSizeException
      * @throws WrongSignException
      */
-    public function __construct(?array $state = null)
+    public function __construct(StateValidator $stateValidator, ?array $state = null)
     {
         if ($state) {
-            (new StateValidator())->validate($state);
+            $stateValidator->validate($state);
         }
 
         $this->state = $state ?? $this->createEmptyBoard();
@@ -67,11 +71,11 @@ class Board implements BoardInterface
         $row = $mark->getRow();
         $column = $mark->getColumn();
 
-        if ($row < 0 && $row >= Board::BOARD_SIZE) {
+        if ($row < 0 && $row >= self::BOARD_SIZE) {
             throw new WrongMarkPositionException($row, $column);
         }
 
-        if ($column < 0 && $column >= Board::BOARD_SIZE) {
+        if ($column < 0 && $column >= self::BOARD_SIZE) {
             throw new WrongMarkPositionException($row, $column);
         }
     }

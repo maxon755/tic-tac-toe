@@ -10,10 +10,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class GameResource extends JsonResource
 {
+    private BoardStateConvertor $boardStateConvertor;
+
     public function __construct($resource)
     {
         static::$wrap = null;
         parent::__construct($resource);
+
+        $this->boardStateConvertor = new BoardStateConvertor();
     }
 
     public function toArray($request)
@@ -23,7 +27,7 @@ class GameResource extends JsonResource
 
         return [
             'id'       => $game->getId(),
-            'board'    => BoardStateConvertor::fromArrayToString($game->getBoard()->getState()),
+            'board'    => $this->boardStateConvertor->fromArrayToString($game->getBoard()->getState()),
             'status'   => (string) $game->getStatus(),
         ];
     }

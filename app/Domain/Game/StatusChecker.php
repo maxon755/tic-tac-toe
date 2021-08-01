@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace App\Domain\Game;
 
-use App\Domain\Board\BoardInterface;
+use App\Domain\Board\Board;
 use App\Domain\Board\Mark;
 
 class StatusChecker
 {
-    public function check(BoardInterface $board): Status
+    /**
+     * Check board state to determine game status
+     *
+     * @param Board $board
+     *
+     * @return Status
+     */
+    public function check(Board $board): Status
     {
         if (
-            $this->checkHorizontal($board, Mark::X_SIGN) ||
-            $this->checkVertical($board, Mark::X_SIGN)
+            $this->checkHorizontals($board, Mark::X_SIGN) ||
+            $this->checkVerticals($board, Mark::X_SIGN)
         ) {
             return Status::createXWonStatus();
         }
@@ -21,7 +28,7 @@ class StatusChecker
         return Status::createRunningStatus();
     }
 
-    private function checkHorizontal(BoardInterface $board, string $sign): bool
+    private function checkHorizontals(Board $board, string $sign): bool
     {
         $signWon = false;
 
@@ -36,7 +43,7 @@ class StatusChecker
         return $signWon;
     }
 
-    private function checkVertical(BoardInterface $board, string $sign): bool
+    private function checkVerticals(Board $board, string $sign): bool
     {
         $signWon = false;
 

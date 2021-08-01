@@ -6,7 +6,7 @@ namespace App\Domain\Exceptions;
 
 use Exception;
 
-class WrongBoardSizeException extends Exception implements BoardStateException
+class WrongMarksCountException extends Exception implements BoardStateException
 {
 
 }

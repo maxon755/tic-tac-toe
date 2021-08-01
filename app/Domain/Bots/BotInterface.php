@@ -2,10 +2,10 @@
 
 namespace App\Domain\Bots;
 
-use App\Domain\Board\BoardInterface;
+use App\Domain\Board\Board;
 use App\Domain\Board\Mark;
 
 interface BotInterface
 {
-    public function makeMove(BoardInterface $board): Mark;
+    public function makeMove(Board $board): Mark;
 }

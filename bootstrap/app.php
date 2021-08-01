@@ -2,6 +2,8 @@
 
 use App\Storages\GameStorage\GameStorage;
 use App\Storages\GameStorage\InMemoryGameStorage;
+use App\TicTacToeFacade;
+use App\TicTacToeFacadeInterface;
 use Laravel\Lumen\Http\ResponseFactory;
 use Lunaweb\RedisMock\Providers\RedisMockServiceProvider;
 
@@ -60,6 +62,11 @@ $app->singleton(\Illuminate\Contracts\Routing\ResponseFactory::class, function()
 $app->bind(
     GameStorage::class,
     InMemoryGameStorage::class
+);
+
+$app->bind(
+    TicTacToeFacadeInterface::class,
+    TicTacToeFacade::class
 );
 
 /*

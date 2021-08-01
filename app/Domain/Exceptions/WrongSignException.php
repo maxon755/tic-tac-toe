@@ -6,7 +6,7 @@ namespace App\Domain\Exceptions;
 
 use Exception;
 
-class WrongSignException extends Exception
+class WrongSignException extends Exception implements BoardStateException
 {
     public function __construct(string $sign)
     {
