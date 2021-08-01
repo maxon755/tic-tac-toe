@@ -61,4 +61,11 @@ class GameController extends Controller
             throw new Exception('Something going wrong while game deletion');
         }
     }
+
+    public function index()
+    {
+        $games = $this->gameStorage->getAll();
+
+        return GameResource::collection($games);
+    }
 }

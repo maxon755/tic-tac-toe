@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Integration;
 
+use App\Domain\Board\Board;
+use App\Domain\Game\Game;
 use App\Storages\GameStorage\GameStorage;
+use Ramsey\Uuid\Uuid;
 use TestCase;
 
 abstract class AbstractGameIntegrationTest extends TestCase
@@ -20,5 +23,11 @@ abstract class AbstractGameIntegrationTest extends TestCase
 
         /** @var GameStorage storage */
         $this->storage = resolve(GameStorage::class);
+    }
+
+    protected function createGame()
+    {
+        $game = new Game(Uuid::uuid4()->toString(), new Board());
+        $this->storage->store($game);
     }
 }

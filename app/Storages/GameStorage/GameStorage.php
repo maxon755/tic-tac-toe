@@ -13,6 +13,8 @@ interface GameStorage
 
     public function get(string $gameId): ?Game;
 
+    public function getAll(): array;
+
     public function has(string $gameId): bool;
 
     public function delete(string $gameId): bool;

@@ -25,6 +25,17 @@ class InMemoryGameStorage implements GameStorage
         return $game ? unserialize($game) : null;
     }
 
+    public function getAll(): array
+    {
+        $gameKeys = $this->redisManager->keys('games:*');
+
+        $games = array_map(function (string $gameKey) {
+            return unserialize($this->redisManager->get($gameKey));
+        }, $gameKeys);
+
+        return $games;
+    }
+
     public function has(string $gameId): bool
     {
         return (bool)$this->redisManager->exists($this->withPrefix($gameId));
