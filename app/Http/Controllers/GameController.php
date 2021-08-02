@@ -97,6 +97,13 @@ class GameController extends Controller
         return GameResource::collection($games);
     }
 
+    /**
+     * @param Request $request
+     * @param string $id
+     * @param TicTacToeFacadeInterface $ticTacToeFacade
+     *
+     * @return JsonResponse|GameResource
+     */
     public function update(
         Request $request,
         string $id,

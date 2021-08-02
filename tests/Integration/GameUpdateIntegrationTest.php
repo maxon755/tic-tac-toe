@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Integration;
 
 use App\Domain\Game\Status;
+use Symfony\Component\HttpFoundation\Response;
 
 class GameUpdateIntegrationTest extends AbstractGameIntegrationTest
 {
@@ -78,5 +79,18 @@ class GameUpdateIntegrationTest extends AbstractGameIntegrationTest
                 'status' => (string) Status::createDrawStatus()
             ])
             ->assertResponseOk();
+    }
+
+    /**
+     * @test
+     */
+    public function non_existing_game_can_not_be_updated()
+    {
+        $this
+            ->put(route('game.update', [
+                'id' => 'some_id',
+                'board' => '----X----',
+            ]))
+            ->assertResponseStatus(Response::HTTP_NOT_FOUND);
     }
 }
