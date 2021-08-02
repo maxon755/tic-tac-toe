@@ -5,7 +5,6 @@ namespace App\Domain\Game;
 use App\Domain\Board\Board;
 use App\Domain\Board\Mark;
 use App\Domain\Bots\AbstractBot;
-use App\Domain\Bots\SimpleBot;
 use App\Domain\Exceptions\CellIsNotEmptyException;
 use App\Domain\Exceptions\WrongMarkPositionException;
 
@@ -19,8 +18,6 @@ class Game
 
     private StatusChecker $statusChecker;
 
-    private AbstractBot $bot;
-
     private WhoIsNextChecker $whoIsNextChecker;
 
     /**
@@ -33,14 +30,13 @@ class Game
     public function __construct(
         private string $id,
         private Board  $board,
+        private AbstractBot $bot,
     )
     {
         $this->statusChecker = new StatusChecker();
         $this->whoIsNextChecker = new WhoIsNextChecker();
 
         $this->checkGameStatus();
-
-        $this->bot = new SimpleBot(self::BOT_SIGN);
 
         if ($this->status->isRunning() && $this->botIsNext()) {
             $this->makeBotMove();

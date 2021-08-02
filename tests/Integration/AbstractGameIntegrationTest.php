@@ -6,6 +6,7 @@ namespace Integration;
 
 use App\Domain\Board\Board;
 use App\Domain\Board\StateValidator;
+use App\Domain\Bots\SimpleBot;
 use App\Domain\Game\Game;
 use App\Helpers\BoardStateConvertor;
 use App\Storages\GameStorage\GameStorage;
@@ -33,7 +34,11 @@ abstract class AbstractGameIntegrationTest extends TestCase
             $boardState = (new BoardStateConvertor())->fromStringToArray($boardState);
         }
 
-        $game = new Game(Uuid::uuid4()->toString(), new Board(new StateValidator(), $boardState));
+        $game = new Game(
+            Uuid::uuid4()->toString(),
+            new Board(new StateValidator(), $boardState),
+            new SimpleBot(Game::BOT_SIGN)
+        );
 
         $this->storage->store($game);
 

@@ -6,6 +6,7 @@ namespace App;
 
 use App\Domain\Board\Board;
 use App\Domain\Board\StateValidator;
+use App\Domain\Bots\BotFactory;
 use App\Domain\Exceptions\CellIsNotEmptyException;
 use App\Domain\Exceptions\WrongBoardSizeException;
 use App\Domain\Exceptions\WrongMarkPositionException;
@@ -21,7 +22,8 @@ class TicTacToeFacade implements TicTacToeFacadeInterface
 {
     public function __construct(
         private BoardStateConvertor $boardStateConvertor,
-        private BoardDiffFinder $boardDiffFinder
+        private BoardDiffFinder $boardDiffFinder,
+        private BotFactory $botFactory,
     ) {
     }
 
@@ -42,7 +44,11 @@ class TicTacToeFacade implements TicTacToeFacadeInterface
             $this->boardStateConvertor->fromStringToArray($boardState)
         );
 
-        return new Game(Uuid::uuid4()->toString(), $board);
+        return new Game(
+            Uuid::uuid4()->toString(),
+            $board,
+            $this->botFactory->createBot(BotFactory::SIMPLE_DIFFICULTY, Game::BOT_SIGN)
+        );
     }
 
     /**
