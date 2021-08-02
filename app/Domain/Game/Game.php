@@ -6,9 +6,15 @@ use App\Domain\Board\Board;
 use App\Domain\Board\Mark;
 use App\Domain\Bots\AbstractBot;
 use App\Domain\Bots\SimpleBot;
+use App\Domain\Exceptions\CellIsNotEmptyException;
+use App\Domain\Exceptions\WrongMarkPositionException;
 
 class Game
 {
+    public const HUMAN_SIGN = Mark::X_SIGN;
+
+    public const BOT_SIGN = Mark::O_SIGN;
+
     private Status $status;
 
     private StatusChecker $statusChecker;
@@ -17,6 +23,13 @@ class Game
 
     private WhoIsNextChecker $whoIsNextChecker;
 
+    /**
+     * @param string $id
+     * @param Board $board
+     *
+     * @throws CellIsNotEmptyException
+     * @throws WrongMarkPositionException
+     */
     public function __construct(
         private string $id,
         private Board  $board,
@@ -25,17 +38,54 @@ class Game
         $this->statusChecker = new StatusChecker();
         $this->whoIsNextChecker = new WhoIsNextChecker();
 
-        $this->status = $this->statusChecker->check($this->board);
+        $this->checkGameStatus();
 
-        $this->bot = new SimpleBot(Mark::O_SIGN);
+        $this->bot = new SimpleBot(self::BOT_SIGN);
 
-        if (
-            $this->status->isRunning() &&
-            $this->whoIsNextChecker->check($this->board) === $this->bot->getSign()
-        ) {
-            $mark = $this->bot->makeMove($this->board);
-            $this->board->setMark($mark);
+        if ($this->status->isRunning() && $this->botIsNext()) {
+            $this->makeBotMove();
         }
+    }
+
+    private function botIsNext(): bool
+    {
+        return $this->whoIsNextChecker->check($this->board) === $this->bot->getSign();
+    }
+
+    private function checkGameStatus(): void
+    {
+        $this->status = $this->statusChecker->check($this->board);
+    }
+
+    /**
+     * @param Mark $humanMoveMark
+     *
+     * @throws CellIsNotEmptyException
+     * @throws WrongMarkPositionException
+     */
+    public function makeHumanMove(Mark $humanMoveMark): void
+    {
+        if (!$this->status->isRunning() || $humanMoveMark->getSign() !== self::HUMAN_SIGN) {
+            return;
+        }
+
+        $this->board->setMark($humanMoveMark);
+        $this->checkGameStatus();
+
+        if ($this->status->isRunning()) {
+            $this->makeBotMove();
+        }
+    }
+
+    /**
+     * @throws CellIsNotEmptyException
+     * @throws WrongMarkPositionException
+     */
+    private function makeBotMove()
+    {
+        $mark = $this->bot->makeMove($this->board);
+        $this->board->setMark($mark);
+        $this->checkGameStatus();
     }
 
     /**

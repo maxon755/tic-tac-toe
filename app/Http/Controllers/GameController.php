@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Domain\Exceptions\BoardStateException;
+use App\Domain\Exceptions\TicTacToeException;
+use App\Exceptions\InconsistentBoardStateDiffException;
 use App\Http\Resources\GameLocationResource;
 use App\Http\Resources\GameResource;
 use App\Storages\GameStorage\GameStorage;
@@ -93,5 +95,35 @@ class GameController extends Controller
         $games = $this->gameStorage->getAll();
 
         return GameResource::collection($games);
+    }
+
+    public function update(
+        Request $request,
+        string $id,
+        ticTacToeFacadeInterface $ticTacToeFacade
+    ): JsonResponse|GameResource {
+        try {
+            $this->validate($request, ['board' => 'required|string|size:9']);
+        } catch (ValidationException $exception) {
+            return $this->badRequest($exception->getMessage());
+        }
+
+        $boardState = $request->input('board');
+
+        $game = $this->gameStorage->get($id);
+
+        if (!$game) {
+            return $this->notFound();
+        }
+
+        try {
+            $game = $ticTacToeFacade->makeNextHumanMove($game, $boardState);
+        } catch (TicTacToeException|InconsistentBoardStateDiffException $exception) {
+            return $this->badRequest($exception->getMessage());
+        }
+
+        $this->gameStorage->store($game);
+
+        return GameResource::make($game);
     }
 }

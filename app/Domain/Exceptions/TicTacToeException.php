@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Exceptions;
 
-interface BoardStateException extends TicTacToeException
+interface TicTacToeException
 {
 
 }

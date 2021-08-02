@@ -8,5 +8,10 @@ use Exception;
 
 class WrongMarksCountException extends Exception implements BoardStateException
 {
+    public function __construct()
+    {
+        $message = "Wrong marks count";
 
+        parent::__construct($message);
+    }
 }

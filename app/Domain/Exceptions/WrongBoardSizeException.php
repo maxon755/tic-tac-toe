@@ -8,5 +8,10 @@ use Exception;
 
 class WrongBoardSizeException extends Exception implements BoardStateException
 {
+    public function __construct(int $allowedBoardSize)
+    {
+        $message = "The board should square {$allowedBoardSize}x{$allowedBoardSize}";
 
+        parent::__construct($message);
+    }
 }

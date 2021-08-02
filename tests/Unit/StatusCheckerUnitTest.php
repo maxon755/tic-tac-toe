@@ -60,8 +60,7 @@ class StatusCheckerUnitTest extends TestCase
                 Status::createDrawStatus()
             ],
 
-
-//            // X WON
+            // X WON
             [
                 'XXXOOXOO-',
                 Status::createXWonStatus(),

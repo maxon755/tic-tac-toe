@@ -6,7 +6,7 @@ namespace App\Domain\Exceptions;
 
 use Exception;
 
-class CellIsNotEmptyException extends Exception
+class CellIsNotEmptyException extends Exception implements MoveException
 {
     public function __construct(int $row, int $column)
     {

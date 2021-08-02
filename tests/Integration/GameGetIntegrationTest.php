@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Integration;
 
-use App\Domain\Board\Board;
-use App\Domain\Board\StateValidator;
-use App\Domain\Game\Game;
 use App\Domain\Game\Status;
+use App\Helpers\BoardStateConvertor;
 
 class GameGetIntegrationTest extends AbstractGameIntegrationTest
 {
@@ -16,16 +14,14 @@ class GameGetIntegrationTest extends AbstractGameIntegrationTest
      */
     public function get_existing_game()
     {
-        $game = new Game('uuid', new Board(new StateValidator()));
-
-        $this->storage->store($game);
+        $game = $this->createGame();
 
         $this->get(route('game.get', [
             'id' => $game->getId(),
         ]))
             ->seeJson([
-                'id'     => 'uuid',
-                'board'  => '---------',
+                'id'     => $game->getId(),
+                'board'  => (new BoardStateConvertor())->fromArrayToString($game->getBoard()->getState()),
                 'status' => (string) Status::createRunningStatus(),
             ])
             ->assertResponseOk();

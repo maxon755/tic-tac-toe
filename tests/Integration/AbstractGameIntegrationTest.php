@@ -7,6 +7,7 @@ namespace Integration;
 use App\Domain\Board\Board;
 use App\Domain\Board\StateValidator;
 use App\Domain\Game\Game;
+use App\Helpers\BoardStateConvertor;
 use App\Storages\GameStorage\GameStorage;
 use Ramsey\Uuid\Uuid;
 use TestCase;
@@ -26,9 +27,16 @@ abstract class AbstractGameIntegrationTest extends TestCase
         $this->storage = resolve(GameStorage::class);
     }
 
-    protected function createGame()
+    protected function createGame(?string $boardState = null): Game
     {
-        $game = new Game(Uuid::uuid4()->toString(), new Board(new StateValidator()));
+        if ($boardState) {
+            $boardState = (new BoardStateConvertor())->fromStringToArray($boardState);
+        }
+
+        $game = new Game(Uuid::uuid4()->toString(), new Board(new StateValidator(), $boardState));
+
         $this->storage->store($game);
+
+        return $game;
     }
 }

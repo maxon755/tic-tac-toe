@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Controller extends BaseController
 {
-    protected function message(string $message, int $status = 200): JsonResponse
+    protected function message(string $message, int $status = 200, string $messageKey = 'message'): JsonResponse
     {
         return response()->json(
-            ['message' => $message],
+            [$messageKey => $message],
             $status
         );
     }
@@ -28,6 +28,6 @@ class Controller extends BaseController
 
     protected function badRequest(string $message): JsonResponse
     {
-        return $this->message($message, Response::HTTP_BAD_REQUEST);
+        return $this->message($message, Response::HTTP_BAD_REQUEST, 'reason');
     }
 }

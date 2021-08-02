@@ -32,12 +32,12 @@ class StateValidator
     private function validateSize(array $state): void
     {
         if (count($state) !== Board::BOARD_SIZE) {
-            throw new WrongBoardSizeException();
+            throw new WrongBoardSizeException(Board::BOARD_SIZE);
         }
 
         foreach ($state as $row) {
             if (count($row) !== Board::BOARD_SIZE) {
-                throw new WrongBoardSizeException();
+                throw new WrongBoardSizeException(Board::BOARD_SIZE);
             }
         }
     }

@@ -30,13 +30,19 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
         'uses' => 'GameController@get',
     ]);
 
-    $router->delete('/games/{id}', [
-        'as' => 'game.delete',
-        'uses' => 'GameController@delete'
-    ]);
 
     $router->get('/games', [
         'as' => 'game.index',
         'uses' => 'GameController@index'
+    ]);
+
+    $router->put('/games/{id}', [
+        'as' => 'game.update',
+        'uses' => 'GameController@update'
+    ]);
+
+    $router->delete('/games/{id}', [
+        'as' => 'game.delete',
+        'uses' => 'GameController@delete'
     ]);
 });
