@@ -6,3 +6,10 @@ docker-compose up -d
 
 composer install
 ```
+
+Game related code in app/Domain
+
+to run tests:
+```
+php vendor/bin/phpunit
+```
