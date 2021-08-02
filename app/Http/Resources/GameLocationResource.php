@@ -17,7 +17,7 @@ class GameLocationResource extends JsonResource
 
         $this->location = route('game.get', [
             'id' => $game->getId(),
-        ]);
+        ], false);
     }
 
     public function toArray($request)

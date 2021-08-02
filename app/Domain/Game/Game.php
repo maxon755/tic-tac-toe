@@ -3,6 +3,7 @@
 namespace App\Domain\Game;
 
 use App\Domain\Board\Board;
+use App\Domain\Board\Mark;
 use App\Domain\Bots\AbstractBot;
 use App\Domain\Bots\SimpleBot;
 
@@ -18,7 +19,7 @@ class Game
 
     public function __construct(
         private string $id,
-        private Board  $board
+        private Board  $board,
     )
     {
         $this->statusChecker = new StatusChecker();
@@ -26,7 +27,7 @@ class Game
 
         $this->status = $this->statusChecker->check($this->board);
 
-        $this->bot = new SimpleBot('O');
+        $this->bot = new SimpleBot(Mark::O_SIGN);
 
         if (
             $this->status->isRunning() &&

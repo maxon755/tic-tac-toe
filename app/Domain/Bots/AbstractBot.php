@@ -21,5 +21,5 @@ abstract class AbstractBot
         return $this->sign;
     }
 
-    public abstract function makeMove(Board $board): Mark;
+    public abstract function makeMove(Board $board): ?Mark;
 }
