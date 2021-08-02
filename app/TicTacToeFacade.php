@@ -6,6 +6,7 @@ namespace App;
 
 use App\Domain\Board\Board;
 use App\Domain\Board\StateValidator;
+use App\Domain\Exceptions\WrongMarksCountException;
 use App\Domain\Game\Game;
 use App\Helpers\BoardStateConvertor;
 use Ramsey\Uuid\Uuid;
@@ -22,6 +23,7 @@ class TicTacToeFacade implements TicTacToeFacadeInterface
      * @return Game
      * @throws Domain\Exceptions\WrongBoardSizeException
      * @throws Domain\Exceptions\WrongSignException
+     * @throws WrongMarksCountException
      */
     public function startGameWithStringBoardState(string $boardState): Game
     {
@@ -30,8 +32,6 @@ class TicTacToeFacade implements TicTacToeFacadeInterface
             $this->boardStateConvertor->fromStringToArray($boardState)
         );
 
-        $game = new Game(Uuid::uuid4()->toString(), $board);
-
-        return $game;
+        return new Game(Uuid::uuid4()->toString(), $board);
     }
 }

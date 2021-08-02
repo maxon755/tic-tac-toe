@@ -7,6 +7,7 @@ namespace App\Domain\Board;
 use App\Domain\Exceptions\CellIsNotEmptyException;
 use App\Domain\Exceptions\WrongBoardSizeException;
 use App\Domain\Exceptions\WrongMarkPositionException;
+use App\Domain\Exceptions\WrongMarksCountException;
 use App\Domain\Exceptions\WrongSignException;
 
 class Board
@@ -18,9 +19,11 @@ class Board
     private array $state;
 
     /**
+     * @param StateValidator $stateValidator
      * @param array|null $state
      *
      * @throws WrongBoardSizeException
+     * @throws WrongMarksCountException
      * @throws WrongSignException
      */
     public function __construct(StateValidator $stateValidator, ?array $state = null)

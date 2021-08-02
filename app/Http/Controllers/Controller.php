@@ -21,13 +21,13 @@ class Controller extends BaseController
         return $this->message($message, Response::HTTP_OK);
     }
 
-    protected function unprocessableEntity(string $message): JsonResponse
-    {
-        return $this->message($message, Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
     protected function notFound(string $message = 'Resource not found'): JsonResponse
     {
         return $this->message($message, Response::HTTP_NOT_FOUND);
+    }
+
+    protected function badRequest(string $message): JsonResponse
+    {
+        return $this->message($message, Response::HTTP_BAD_REQUEST);
     }
 }

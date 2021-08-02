@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Domain\Game\Game;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Symfony\Component\HttpFoundation\Response;
 
 class GameLocationResource extends JsonResource
 {
@@ -14,6 +15,8 @@ class GameLocationResource extends JsonResource
     public function __construct(Game $game)
     {
         parent::__construct($game);
+
+        static::$wrap = null;
 
         $this->location = route('game.get', [
             'id' => $game->getId(),
@@ -30,5 +33,6 @@ class GameLocationResource extends JsonResource
     public function withResponse($request, $response)
     {
         $response->header('Location', $this->location);
+        $response->setStatusCode(Response::HTTP_CREATED);
     }
 }

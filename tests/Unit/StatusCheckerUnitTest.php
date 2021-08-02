@@ -7,6 +7,7 @@ namespace Unit;
 use App\Domain\Board\Board;
 use App\Domain\Board\StateValidator;
 use App\Domain\Exceptions\WrongBoardSizeException;
+use App\Domain\Exceptions\WrongMarksCountException;
 use App\Domain\Exceptions\WrongSignException;
 use App\Domain\Game\Status;
 use App\Domain\Game\StatusChecker;
@@ -31,6 +32,7 @@ class StatusCheckerUnitTest extends TestCase
      *
      * @throws WrongBoardSizeException
      * @throws WrongSignException
+     * @throws WrongMarksCountException
      */
     public function game_status_check(string $boardState, Status $expectedStatus)
     {
