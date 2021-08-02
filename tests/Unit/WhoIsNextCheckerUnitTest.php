@@ -43,7 +43,7 @@ class WhoIsNextCheckerUnitTest extends TestCase
      * @throws WrongMarkPositionException
      * @throws WrongSignException
      */
-    public function o_next_test()
+    public function o_should_go_next()
     {
         $board = $this->createEmptyBoard();
 
@@ -59,7 +59,7 @@ class WhoIsNextCheckerUnitTest extends TestCase
      * @throws WrongSignException
      * @throws CellIsNotEmptyException
      */
-    public function x_next_test()
+    public function x_should_go_next()
     {
         $board = $this->createEmptyBoard();
 

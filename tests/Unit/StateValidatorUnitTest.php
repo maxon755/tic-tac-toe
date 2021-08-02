@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Unit;
 
 use App\Domain\Board\Board;
+use App\Domain\Board\Mark;
 use App\Domain\Board\StateValidator;
 use App\Domain\Exceptions\WrongBoardSizeException;
 use App\Domain\Exceptions\WrongMarksCountException;
@@ -43,6 +44,7 @@ class StateValidatorUnitTest extends TestCase
      *
      * @throws WrongBoardSizeException
      * @throws WrongSignException
+     * @throws WrongMarksCountException
      */
     public function wrong_board_rows_count()
     {
@@ -60,6 +62,7 @@ class StateValidatorUnitTest extends TestCase
      *
      * @throws WrongBoardSizeException
      * @throws WrongSignException
+     * @throws WrongMarksCountException
      */
     public function wrong_board_columns_count()
     {
@@ -76,6 +79,7 @@ class StateValidatorUnitTest extends TestCase
      *
      * @throws WrongBoardSizeException
      * @throws WrongSignException
+     * @throws WrongMarksCountException
      */
     public function wrong_sign()
     {
@@ -91,19 +95,34 @@ class StateValidatorUnitTest extends TestCase
     /**
      * @test
      *
-     * @skip
-     *
      * @throws WrongBoardSizeException
      * @throws WrongSignException
      */
-    public function wrong_marks_count()
+    public function too_many_x_marks()
     {
         $this->expectException(WrongMarksCountException::class);
 
         $board = $this->createEmptyBoardState();
 
-        $board[0][0] = 'X';
-        $board[0][1] = 'X';
+        $board[0][0] = Mark::X_SIGN;
+        $board[0][1] = Mark::X_SIGN;
+
+        $this->stateValidator->validate($board);
+    }
+
+    /**
+     * @test
+     *
+     * @throws WrongBoardSizeException
+     * @throws WrongSignException
+     */
+    public function o_went_first()
+    {
+        $this->expectException(WrongMarksCountException::class);
+
+        $board = $this->createEmptyBoardState();
+
+        $board[0][0] = Mark::O_SIGN;
 
         $this->stateValidator->validate($board);
     }

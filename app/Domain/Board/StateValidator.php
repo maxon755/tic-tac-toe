@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Board;
 
 use App\Domain\Exceptions\WrongBoardSizeException;
+use App\Domain\Exceptions\WrongMarksCountException;
 use App\Domain\Exceptions\WrongSignException;
 
 class StateValidator
@@ -14,11 +15,13 @@ class StateValidator
      *
      * @throws WrongBoardSizeException
      * @throws WrongSignException
+     * @throws WrongMarksCountException
      */
     public function validate(array $state): void
     {
         $this->validateSize($state);
         $this->validateSigns($state);
+        $this->validateSingsCount($state);
     }
 
     /**
@@ -53,5 +56,35 @@ class StateValidator
                 }
             }
         }
+    }
+
+    /**
+     * @param array $state
+     *
+     * @throws WrongMarksCountException
+     */
+    private function validateSingsCount(array $state): void
+    {
+        $xMarks = $this->countSign($state, Mark::X_SIGN);
+        $oMarks = $this->countSign($state, Mark::O_SIGN);
+
+        if ($xMarks - $oMarks < 0 || $xMarks - $oMarks > 1) {
+            throw new WrongMarksCountException();
+        }
+    }
+
+    private function countSign(array $state, string $sign): int
+    {
+        $counter = 0;
+
+        foreach ($state as $row) {
+            foreach ($row as $cell) {
+                if ($cell === $sign) {
+                    $counter++;
+                }
+            }
+        }
+
+        return $counter;
     }
 }
